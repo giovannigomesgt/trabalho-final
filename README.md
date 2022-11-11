@@ -1,8 +1,6 @@
 # trabalho-final
 
-
 O que deve ser feito?
-
 - Criar um Bucket S3 - OK
 - Criar um Cluster EMR (criar manualmente e enviar steps depois ou criar na DAG) - OK
 - Criar um cluster Kubernetes - OK
@@ -20,9 +18,9 @@ O que deve ser feito?
 - Todo o processamento de dados orquestrado pelo AIRFLOW no K8s - PENDENTE
 
 Entregáveis
-Link do repositório git (Github, Gitlab) com os códigos
-Print do Bucket S3 criado
-Print do Cluster EMR criado
+Link do repositório git (Github, Gitlab) com os códigos - ok
+Print do Bucket S3 criado - ok
+Print do Cluster EMR criado - ok 
 Print da DAG no Airflow concluída (visão do GRID)
 Print do Notebook mostrando a tabela final com `.show()`
 Para envio só serão aceitos arquivos com extensão 'jpg', 'jpeg' ou 'png'.
