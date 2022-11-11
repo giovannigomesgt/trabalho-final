@@ -26,7 +26,7 @@ default_args = {
     tags=['Spark','EMR','Filmes','Imdb']
     )
     
-def indicadores_titanic():
+def indicadores_filmesImdb():
 
     inicio = DummyOperator(task_id='inicio')
 
@@ -115,7 +115,7 @@ def indicadores_titanic():
                 'MaxAttempts': 600
             }
         )
-    processoSucess = DummyOperator(task_id="dados_processados")
+    processoSucess = DummyOperator(task_id="processamento_concluido")
     @task
     def terminando_cluster_emr(cid: str):
         res = client.terminate_job_flows(
