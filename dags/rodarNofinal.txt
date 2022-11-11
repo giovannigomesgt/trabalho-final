@@ -1,0 +1,12 @@
+from pyspark.sql import functions as f
+from pyspark.sql import SparkSession
+
+print('Iniciando uma SparkSession')
+
+spark = SparkSession.builder.appName('filmes').getOrCreate()
+evidencia = (
+    spark
+    .read
+    .parquet('s3://microdados-256240406578/PARQUETs/tabelafinal/')
+)
+evidencia.show()

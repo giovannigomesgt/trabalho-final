@@ -1,0 +1,41 @@
+defaultAirflowTag: "2.3.0"
+airflowVersion: "2.3.0"
+executor: "KubernetesExecutor"
+env:
+  - name: AIRFLOW__LOGGING__REMOTE_LOGGING
+    value: 'True'
+  - name: AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER
+    value: 's3://airflow-256240406578/logs/'
+  - name: AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID
+    value: 'my_aws'
+webserver:
+  defaultUser:
+    enabled: true
+    role: Admin
+    username: giovanni.gomes
+    email: giovannigomes.snt@gmail.com
+    firstName: Giovanni
+    lastName: Leocadio
+    password: admin
+  service:
+    type: LoadBalancer
+
+redis:
+  enabled: false
+
+dags:
+  gitSync:
+    enabled: true
+    repo: https://github.com/giovannigomesgt/trabalho-final.git
+    branch: main
+    rev: HEAD
+    depth: 1
+    maxFailures: 0
+    subPath: "dags"
+    wait: 30
+    containerName: git-sync
+    uid: 65533
+    securityContext: {}
+    extraVolumeMounts: []
+    env: []
+    resources: {}
