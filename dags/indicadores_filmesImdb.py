@@ -140,4 +140,4 @@ def indicadores_filmesImdb():
     wait_step >> processoSucess >> terminacluster >> fim
     #---------------
 
-execucao = indicadores_titanic()
+execucao = indicadores_filmesImdb()
