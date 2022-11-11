@@ -138,6 +138,5 @@ def indicadores_filmesImdb():
 
     terminacluster = terminando_cluster_emr(cluster)
     wait_step >> processoSucess >> terminacluster >> fim
-    #---------------
 
 execucao = indicadores_filmesImdb()
