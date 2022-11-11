@@ -57,10 +57,10 @@ def indicadores_filmesImdb():
                     },
                     {
                         'Name': 'Task nodes',
-                        'Market': 'SPOT',
+                        'Market': 'ON_DEMAND',
                         'InstanceRole': 'TASK',
                         'InstanceType': 'm5.xlarge',
-                        'InstanceCount': 12,
+                        'InstanceCount': 1,
                     }
                 ],
                 #'Ec2KeyName': 'gio-testes',
