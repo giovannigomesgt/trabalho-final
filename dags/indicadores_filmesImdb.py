@@ -63,7 +63,7 @@ def indicadores_filmesImdb():
                         'InstanceCount': 1,
                     }
                 ],
-                #'Ec2KeyName': 'gio-testes',
+                #'Ec2KeyName': 'gio-teste',
                 'KeepJobFlowAliveWhenNoSteps': True,
                 'TerminationProtected': False,
                 'Ec2SubnetId': 'subnet-00709a3ade46a24c7'
