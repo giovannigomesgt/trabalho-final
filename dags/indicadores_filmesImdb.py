@@ -102,7 +102,7 @@ def indicadores_filmesImdb():
                             'Args': ['spark-submit',
                                     '--master', 'yarn',
                                     '--deploy-mode', 'cluster',
-                                    's3://emr-256240406578/code/filmes_imdb.py'
+                                    's3://emr-256240406578/code/arquivos_gov.py'
                                     ]
                         }
                     }

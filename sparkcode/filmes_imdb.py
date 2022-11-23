@@ -71,6 +71,7 @@ indicador1 = spark.sql("""
   GROUP BY director
   ORDER BY COUNT(title) DESC
 """)
+indicador1.show()
 
 # 2 - média imdb_rating por diretor
 indicador2 = spark.sql("""
@@ -81,6 +82,7 @@ indicador2 = spark.sql("""
   GROUP BY director
   ORDER BY mean(imdb_rating) DESC
 """)
+indicador2.show()
 
 # 3 - Tempo do maior filme por diretor
 indicador3 = spark.sql("""
@@ -91,7 +93,10 @@ indicador3 = spark.sql("""
   GROUP BY director
   ORDER BY max(runtime) DESC
 """)
+indicador3.show()
 
+
+print('Escrevendo arquivos no formato parquet')
 #Transformando em Parquet
 (
     indicador1
@@ -100,7 +105,7 @@ indicador3 = spark.sql("""
     .mode("append")
     .save("s3://microdados-256240406578/PARQUETs//indicador1")
 )
-
+print('Indicador 1 escrito com Sucesso!')
 #Transformando em Parquet
 (
     indicador2
@@ -109,6 +114,7 @@ indicador3 = spark.sql("""
     .mode("append")
     .save("s3://microdados-256240406578/PARQUETs//indicador2")
 )
+print('Indicador 2 escrito com Sucesso!')
 
 #Transformando em Parquet
 (
@@ -118,6 +124,8 @@ indicador3 = spark.sql("""
     .mode("append")
     .save("s3://microdados-256240406578/PARQUETs//indicador3")
 )
+print('Indicador 3 escrito com Sucesso!')
+
 
 df1 = (
     spark
@@ -140,6 +148,8 @@ df3 = (
 df1.createOrReplaceTempView('df1')
 df2.createOrReplaceTempView('df2')
 df3.createOrReplaceTempView('df3')
+
+print('Juntando tabelas')
 
 tabelafinal = spark.sql("""
    SELECT
