@@ -95,8 +95,8 @@ def indicadores_filmesImdb():
             JobFlowId=cid,
             Steps=[
                     {
-                        'Name': 'Processa dados de Filmes',
-                        'ActionOnFailure': "CONTINUE",
+                        'Name': 'Processa dados do Gov',
+                        'ActionOnFailure': "TERMINATE_CLUSTER",
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
