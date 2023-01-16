@@ -37,7 +37,7 @@ def indicadores_filmesImdb():
             ServiceRole='EMR_DefaultRole',
             JobFlowRole='EMR_EC2_DefaultRole',
             VisibleToAllUsers=True,
-            LogUri='s3://emr-256240406578/elasticmapreduce/',
+            LogUri='s3://emr-256240406578/Logs_emr/',
             ReleaseLabel='emr-6.8.0',
             Instances={
                 'InstanceGroups': [
@@ -102,7 +102,7 @@ def indicadores_filmesImdb():
                             'Args': ['spark-submit',
                                     '--master', 'yarn',
                                     '--deploy-mode', 'cluster',
-                                    's3://emr-256240406578/code/arquivos_gov.py'
+                                    's3://notebooks-256240406578/sparkcode/etlgov/ETLGOV.py'
                                     ]
                         }
                     }

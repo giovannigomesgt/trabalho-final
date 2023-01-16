@@ -1,7 +1,6 @@
 eksctl create cluster \
    --version=1.21 \
    --name=datagio \
-   --timeout=60m0s \
    --managed \
    --instance-types=m5.xlarge \
    --alb-ingress-access --node-private-networking \
