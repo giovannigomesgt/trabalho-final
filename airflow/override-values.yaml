@@ -34,8 +34,3 @@ dags:
     subPath: "dags"
     wait: 30
     containerName: git-sync
-    uid: 65533
-    securityContext: {}
-    extraVolumeMounts: []
-    env: []
-    resources: {}

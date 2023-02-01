@@ -23,10 +23,10 @@ default_args = {
     schedule_interval="@once",
     description="Executa um job Spark no EMR",
     catchup=False,
-    tags=['Spark','EMR','Filmes','Imdb']
+    tags=['Spark','EMR','Processamento','Gob']
     )
     
-def indicadores_filmesImdb():
+def processamento_dados():
 
     inicio = DummyOperator(task_id='inicio')
 
@@ -145,4 +145,4 @@ def indicadores_filmesImdb():
     terminacluster = terminando_cluster_emr(cluster)
     wait_step >> processoSucess >> terminacluster >> fim
 
-execucao = indicadores_filmesImdb()
+execucao = processamento_dados()
