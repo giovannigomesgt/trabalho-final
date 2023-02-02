@@ -23,7 +23,7 @@ default_args = {
     schedule_interval="@once",
     description="Executa um job Spark no EMR",
     catchup=False,
-    tags=['Spark','EMR','Processamento','Gob']
+    tags=['Spark','EMR','Processamento','Gov']
     )
     
 def processamento_dados():
