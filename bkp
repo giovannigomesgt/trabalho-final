@@ -99,6 +99,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Cnaes.py'
                                     ]
                         }
@@ -109,6 +111,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Empresas.py'
                                     ]
                         }
@@ -119,6 +123,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Estabelecimentos.py'
                                     ]
                         }
@@ -129,6 +135,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Motivos.py'
                                     ]
                         }
@@ -139,6 +147,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Municipios.py'
                                     ]
                         }
@@ -149,6 +159,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Naturezas.py'
                                     ]
                         }
@@ -159,6 +171,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Paises.py'
                                     ]
                         }
@@ -169,6 +183,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Qualificacoes.py'
                                     ]
                         }
@@ -179,6 +195,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Simples.py'
                                     ]
                         }
@@ -189,6 +207,8 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Socios.py'
                                     ]
                         }
