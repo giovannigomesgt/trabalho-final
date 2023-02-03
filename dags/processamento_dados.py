@@ -94,14 +94,122 @@ def processamento_dados():
             JobFlowId=cid,
             Steps=[
                     {
-                        'Name': 'Processa dados do Gov',
-                        'ActionOnFailure': "TERMINATE_CLUSTER",
+                        'Name': 'Processa dados do Gov - Cnaes',
+                        'ActionOnFailure': "CONTINUE",
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
                                     '--master', 'yarn',
                                     '--deploy-mode', 'cluster',
-                                    's3://notebooks-256240406578/sparkcode/etlgov/ETLGOV.py'
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Cnaes.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Empresas',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Empresas.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Estabelecimentos',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Estabelecimentos.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Motivos',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Motivos.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Municipios',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Municipios.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Naturezas',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Naturezas.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Paises',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Paises.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Qualificacoes',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Qualificacoes.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Simples',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Simples.py'
+                                    ]
+                        }
+                    },
+                    {
+                        'Name': 'Processa dados do Gov - Socios',
+                        'ActionOnFailure': "CONTINUE",
+                        'HadoopJarStep': {
+                            'Jar': 'command-runner.jar',
+                            'Args': ['spark-submit',
+                                    '--master', 'yarn',
+                                    '--deploy-mode', 'cluster',
+                                    's3://notebooks-256240406578/sparkcode/etlgov/Socios.py'
                                     ]
                         }
                     }
@@ -121,6 +229,7 @@ def processamento_dados():
                 'MaxAttempts': 600
             }
         )
+
     processoSucess = DummyOperator(task_id="processamento_concluido")
     @task
     def terminando_cluster_emr(cid: str):
@@ -138,6 +247,8 @@ def processamento_dados():
     esperacluster = aguardando_criacao_cluster(cluster)
 
     indicadores = enviando_dados_para_processamento(cluster) 
+    
+    
     esperacluster >> indicadores
 
     wait_step = aguardando_execucao_do_job(cluster, indicadores)
