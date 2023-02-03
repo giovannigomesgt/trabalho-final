@@ -2,9 +2,10 @@ from pyspark.sql.types import StringType
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as f
 
-spark = SparkSession.builder.appName("Tratando dados Gov").getOrCreate()
+spark = SparkSession.builder.appName("Tratando dados Gov").config("spark.sql.legacy.timeParserPolicy", "LEGACY").config("spark.sql.parquet.datetimeRebaseModeInWrite", "LEGACY").getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
 
+print("Reading Socios CSV file from S3...")
 socios = spark.read.csv("s3://dadosgov-raw-256240406578/dados_publicos_cnpj/Socios*",
          inferSchema=True, sep=";", encoding='latin1')
 
@@ -23,6 +24,7 @@ colnames = ['cnpj_basico',
 for i, colname in enumerate(colnames):
     socios = socios.withColumnRenamed(f'_c{i}', colname)
 
+    print("Writing cnpj dataset as a parquet table on trusted...")
 socios.write.format("parquet").mode("overwrite").save("s3://dadosgov-trusted-256240406578/dados_publicos_cnpj/Socios")
 
 socios = socios.withColumn('data_de_entrada_sociedade', f.to_date(socios['data_de_entrada_sociedade'].cast(StringType()), 'yyyyMMdd'))
