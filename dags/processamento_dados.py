@@ -33,7 +33,7 @@ def processamento_dados():
     @task
     def criando_cluster_emr():
         cluster_id = client.run_job_flow(
-            Name='Automated_EMR_Gio',
+            Name='Processamento_Gov',
             ServiceRole='EMR_DefaultRole',
             JobFlowRole='EMR_EC2_DefaultRole',
             VisibleToAllUsers=True,
@@ -52,20 +52,14 @@ def processamento_dados():
                         'Name': 'Worker nodes',
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
-                        'InstanceType': 'm5.xlarge',
-                        'InstanceCount': 1,
-                    },
-                    {
-                        'Name': 'Task nodes',
-                        'Market': 'ON_DEMAND',
-                        'InstanceRole': 'TASK',
-                        'InstanceType': 'm5.xlarge',
-                        'InstanceCount': 1,
+                        'InstanceType': 'm5.2xlarge',
+                        'InstanceCount': 2,
                     }
                 ],
                 'KeepJobFlowAliveWhenNoSteps': True,
                 'TerminationProtected': False,
-                'Ec2SubnetId': 'subnet-00709a3ade46a24c7'
+                'Ec2SubnetId': 'subnet-00709a3ade46a24c7',
+                "StepConcurrencyLevel": 3
             },
 
             Applications=[{'Name': 'Spark'}],
@@ -99,7 +93,20 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Cnaes.py'
+                                    
+
                                     ]
                         }
                     },
@@ -109,6 +116,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Empresas.py'
                                     ]
                         }
@@ -119,6 +137,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Estabelecimentos.py'
                                     ]
                         }
@@ -129,6 +158,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Motivos.py'
                                     ]
                         }
@@ -139,6 +179,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Municipios.py'
                                     ]
                         }
@@ -149,6 +200,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Naturezas.py'
                                     ]
                         }
@@ -159,6 +221,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Paises.py'
                                     ]
                         }
@@ -169,6 +242,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Qualificacoes.py'
                                     ]
                         }
@@ -179,6 +263,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Simples.py'
                                     ]
                         }
@@ -189,6 +284,17 @@ def processamento_dados():
                         'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                    '--deploy-mode', 'cluster',
+                                    '--conf', 'spark.executor.cores=8',
+                                    '--conf', 'spark.executor.memory=4g',
+                                    '--conf', 'spark.executor.memoryOverhead=1g',
+                                    '--conf', 'spark.executor.instances=1',
+                                    '--conf', 'spark.driver.cores=8',
+                                    '--conf', 'spark.driver.memory=4g',
+                                    '--conf', 'spark.driver.memoryOverhead=1g',
+                                    '--conf', 'spark.default.parallelism=16',
+                                    '--conf', 'spark.driver.maxResultSize=5g',
+                                    '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
                                     's3://notebooks-256240406578/sparkcode/etlgov/Socios.py'
                                     ]
                         }
