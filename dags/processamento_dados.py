@@ -33,7 +33,7 @@ def processamento_dados():
     @task
     def criando_cluster_emr():
         cluster_id = client.run_job_flow(
-            Name='Processamento_Gov',
+            Name='ProcessamentoGov',
             ServiceRole='EMR_DefaultRole',
             JobFlowRole='EMR_EC2_DefaultRole',
             VisibleToAllUsers=True,
