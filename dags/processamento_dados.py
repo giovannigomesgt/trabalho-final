@@ -57,7 +57,7 @@ def processamento_dados():
                 ],
                 'KeepJobFlowAliveWhenNoSteps': True,
                 'TerminationProtected': False,
-                # 'Ec2SubnetId': 'subnet-00709a3ade46a24c7'
+                'Ec2SubnetId': 'subnet-00709a3ade46a24c7'
             },
             ServiceRole='EMR_DefaultRole',
             JobFlowRole='EMR_EC2_DefaultRole',
