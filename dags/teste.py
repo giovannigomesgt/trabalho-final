@@ -26,7 +26,7 @@ default_args = {
     tags=['Spark','EMR','Processamento','Gov']
     )
     
-def processamento_dados():
+def testeEmr():
 
     inicio = DummyOperator(task_id='inicio')
 
@@ -52,15 +52,8 @@ def processamento_dados():
                         'Name': 'Worker nodes',
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
-                        'InstanceType': 'm5.xlarge',
-                        'InstanceCount': 1,
-                    },
-                    {
-                        'Name': 'Task nodes',
-                        'Market': 'ON_DEMAND',
-                        'InstanceRole': 'TASK',
-                        'InstanceType': 'm5.xlarge',
-                        'InstanceCount': 1,
+                        'InstanceType': 'm5.2xlarge',
+                        'InstanceCount': 2,
                     }
                 ],
                 'KeepJobFlowAliveWhenNoSteps': True,
@@ -236,4 +229,4 @@ def processamento_dados():
     terminacluster = terminando_cluster_emr(cluster)
     wait_step >> processoSucess >> terminacluster >> fim
 
-execucao = processamento_dados()
+execucao = testeEmr()

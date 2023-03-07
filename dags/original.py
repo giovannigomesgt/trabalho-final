@@ -26,7 +26,7 @@ default_args = {
     tags=['Spark','EMR','Processamento','Gov']
     )
     
-def govDados():
+def processamentoGov():
 
     inicio = DummyOperator(task_id='inicio')
 
@@ -236,4 +236,4 @@ def govDados():
     terminacluster = terminando_cluster_emr(cluster)
     wait_step >> processoSucess >> terminacluster >> fim
 
-execucao = govDados()
+execucao = processamentoGov()
