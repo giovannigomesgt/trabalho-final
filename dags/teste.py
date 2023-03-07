@@ -58,7 +58,7 @@ def testeEmr():
                 ],
                 'KeepJobFlowAliveWhenNoSteps': True,
                 'TerminationProtected': False,
-                'Ec2SubnetId': 'subnet-00709a3ade46a24c7'
+                #'Ec2SubnetId': 'subnet-00709a3ade46a24c7'
             },
 
             Applications=[{'Name': 'Spark'}],
