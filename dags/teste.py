@@ -64,8 +64,8 @@ def testeEmr():
 
             Applications=[{'Name': 'Spark'}],
             AutoTerminationPolicy={
-                "IdleTimeout": 20
-            }
+                'IdleTimeout': 120
+            },
         )
         return cluster_id["JobFlowId"]
 
