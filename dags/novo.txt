@@ -1,0 +1,156 @@
+from airflow.decorators import task, dag
+from airflow.operators.dummy import DummyOperator
+from airflow.models import Variable
+from datetime import datetime
+import boto3
+
+# VARIABLES
+aws_access_key_id = Variable.get('aws_access_key_id')
+aws_secret_access_key = Variable.get('aws_secret_access_key')
+
+client = boto3.client(
+    'emr', region_name='us-east-1',
+    aws_access_key_id=aws_access_key_id,
+    aws_secret_access_key=aws_secret_access_key
+)
+
+# Spark steps
+SPARK_STEPS = [
+    {
+        'Name': 'Processa dados do Gov - Cnaes',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Cnaes.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Empresas',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Empresas.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Estabelecimentos',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Estabelecimentos.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Motivos',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Motivos.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Municipios',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Municipios.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Naturezas',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Naturezas.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Paises',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Paises.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Qualificacoes',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Qualificacoes.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Simples',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Simples.py'
+                     ]
+        }
+    },
+    {
+        'Name': 'Processa dados do Gov - Socios',
+        'ActionOnFailure': "CONTINUE",
+        'HadoopJarStep': {
+            'Jar': 'command-runner.jar',
+            'Args': ['spark-submit',
+                     's3://notebooks-256240406578/sparkcode/etlgov/Socios.py'
+                     ]
+        }
+    }
+]
+
+
+# Create the EMR cluster
+def criando_cluster_emr():
+        cluster_id = client.run_job_flow(
+            Name='Processamento_Gov',
+            ServiceRole='EMR_DefaultRole',
+            JobFlowRole='EMR_EC2_DefaultRole',
+            VisibleToAllUsers=True,
+            LogUri='s3://emr-256240406578/Logs_emr/',
+            ReleaseLabel='emr-6.8.0',
+            Instances={
+                'InstanceGroups': [
+                    {
+                        'Name': 'Master nodes',
+                        'Market': 'ON_DEMAND',
+                        'InstanceRole': 'MASTER',
+                        'InstanceType': 'm5.xlarge',
+                        'InstanceCount': 1,
+                    },
+                    {
+                        'Name': 'Worker nodes',
+                        'Market': 'ON_DEMAND',
+                        'InstanceRole': 'CORE',
+                        'InstanceType': 'm5.2xlarge',
+                        'InstanceCount': 2,
+                    }
+                ],
+                'KeepJobFlowAliveWhenNoSteps': True,
+                'TerminationProtected': False,
+                'Ec2SubnetId': 'subnet-00709a3ade46a24c7',
+                "StepConcurrencyLevel": 3
+            },
+
+            Applications=[{'Name': 'Spark'}],
+        )
+        return cluster_id["JobFlowId"]
