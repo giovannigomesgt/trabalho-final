@@ -68,7 +68,7 @@ def processamento_dados():
                 {"Key": "ProjectName", "Value": "Data Lake"}, {
                     "Key": "TechnicalTeam", "Value": "Arquitetura"}
             ],
-            StepConcurrencyLevel = 3,
+            #StepConcurrencyLevel = 3,
             AutoTerminationPolicy={
                 "IdleTimeout": 20
             }
