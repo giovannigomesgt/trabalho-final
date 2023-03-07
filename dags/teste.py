@@ -71,6 +71,7 @@ def testeEmr():
                 {"Key": "ProjectName", "Value": "Data Lake"}, {
                     "Key": "TechnicalTeam", "Value": "Arquitetura"}
             ],
+            StepConcurrencyLevel=3
         )
         return cluster_id["JobFlowId"]
 
