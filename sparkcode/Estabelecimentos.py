@@ -3,6 +3,11 @@ print("Importing libraries...")
 from pyspark.sql.types import StringType
 from pyspark.sql import SparkSession, functions as f
 
+# Variables
+raw = 's3://256240406578-datalake-dev-raw/dados_publicos_cnpj'
+trusted = 's3://256240406578-datalake-dev-trusted/dados_publicos_cnpj'
+refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
+
 # Criando sessão Spark
 print("Creating SparkSession...")
 spark = SparkSession.builder \
@@ -18,7 +23,7 @@ spark.sparkContext.setLogLevel("WARN")
 print("Reading Estabelecimentos CSV file from S3...")
 estabelecimentos = spark \
     .read \
-    .csv("s3://dadosgov-raw-256240406578/dados_publicos_cnpj/Estabelecimentos*",
+    .csv(f"{raw}/Estabelecimentos*",
          inferSchema=True, sep=";", encoding='latin1')
 
 col_names = ['cnpj_basico', 'cnpj_ordem', 'cnpj_dv', 'identificador_matriz_filial',
@@ -37,7 +42,7 @@ estabelecimentos \
     .write \
     .format("parquet") \
     .mode("overwrite") \
-    .save("s3://dadosgov-trusted-256240406578/dados_publicos_cnpj/Estabelecimentos")
+    .save(f"{trusted}/Estabelecimentos")
 
 # Convertendo colunas de data
 estabelecimentos = estabelecimentos\
@@ -110,7 +115,7 @@ print("Writing cnpj dataset as a parquet table on Refined...")
     .write
     .format('parquet')
     .mode("overwrite")
-    .save("s3://dadosgov-refined-256240406578/dados_publicos_cnpj/Estabelecimentos")
+    .save(f"{refined}/Estabelecimentos")
 )
 
 spark.stop()

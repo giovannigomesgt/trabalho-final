@@ -1,9 +1,15 @@
 from pyspark.sql import SparkSession, functions as f
 from pyspark.sql.types import StringType
 
+# Variables
+raw = 's3://256240406578-datalake-dev-raw/dados_publicos_cnpj'
+trusted = 's3://256240406578-datalake-dev-trusted/dados_publicos_cnpj'
+refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
+
+
 spark = SparkSession.builder.appName('simples').getOrCreate()
 
-simples = spark.read.csv("s3://dadosgov-raw-256240406578/dados_publicos_cnpj/Simples*",
+simples = spark.read.csv(f"{raw}/Simples*",
          inferSchema=True, sep=";", encoding='latin1')
 
 col_names = ['cnpj_basico', 'opcao_pelo_simples', 'data_de_opcao_pelo_simples',            'data_de_exclusao_do_simples', 'opcao_pelo_mei', 'data_de_opcao_pelo_mei', 'data_de_exclusao_do_mei']
@@ -24,9 +30,9 @@ simples = simples.withColumn('opcao_pelo_mei',
                  .when(simples['opcao_pelo_mei'] == 'N', 'Nao'))
 
 simples.write.format("parquet").mode("overwrite")\
-    .save("s3://dadosgov-trusted-256240406578/dados_publicos_cnpj/Simples")
+    .save(f"{trusted}/Simples")
 
 simples.write.format('parquet').mode("overwrite")\
-    .save("s3://dadosgov-refined-256240406578/dados_publicos_cnpj/Simples")
+    .save(f"{refined}/Simples")
 
 spark.stop()

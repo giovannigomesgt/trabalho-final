@@ -2,11 +2,17 @@ from pyspark.sql.types import StringType
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as f
 
+# Variables
+raw = 's3://256240406578-datalake-dev-raw/dados_publicos_cnpj'
+trusted = 's3://256240406578-datalake-dev-trusted/dados_publicos_cnpj'
+refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
+
+
 spark = SparkSession.builder.appName("Tratando dados Gov").config("spark.sql.legacy.timeParserPolicy", "LEGACY").config("spark.sql.parquet.datetimeRebaseModeInWrite", "LEGACY").getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
 
 print("Reading Socios CSV file from S3...")
-socios = spark.read.csv("s3://dadosgov-raw-256240406578/dados_publicos_cnpj/Socios*",
+socios = spark.read.csv(f"{raw}/Socios*",
          inferSchema=True, sep=";", encoding='latin1')
 
 colnames = ['cnpj_basico',
@@ -25,7 +31,7 @@ for i, colname in enumerate(colnames):
     socios = socios.withColumnRenamed(f'_c{i}', colname)
 
     print("Writing cnpj dataset as a parquet table on trusted...")
-socios.write.format("parquet").mode("overwrite").save("s3://dadosgov-trusted-256240406578/dados_publicos_cnpj/Socios")
+socios.write.format("parquet").mode("overwrite").save(f"{trusted}/Socios")
 
 socios = socios.withColumn('data_de_entrada_sociedade', f.to_date(socios['data_de_entrada_sociedade'].cast(StringType()), 'yyyyMMdd'))
 socios.createOrReplaceTempView('socios')
@@ -58,6 +64,6 @@ socios = spark.sql("""
 """)
 
 print("Writing cnpj dataset as a parquet table on refined...")
-socios.write.format('parquet').mode("overwrite").save("s3://dadosgov-refined-256240406578/dados_publicos_cnpj/Socios")
+socios.write.format('parquet').mode("overwrite").save(f"{refined}/Socios")
 
 spark.stop()

@@ -199,11 +199,12 @@ def testeEmr():
 
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
-        waiter = client.get_waiter('step_complete')
+        
+        waiter = client.get_waiter('step_complete') # mudar para waiter = emr_client.get_waiter('cluster_running')
 
         waiter.wait(
             ClusterId=cid,
-            StepId=stepId,
+            StepId=stepId, # remover no próximo commit
             WaiterConfig={
                 'Delay': 10,
                 'MaxAttempts': 600

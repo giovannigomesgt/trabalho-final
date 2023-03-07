@@ -2,6 +2,11 @@
 print("Importing libraries...")
 from pyspark.sql import SparkSession
 
+# Variables
+raw = 's3://256240406578-datalake-dev-raw/dados_publicos_cnpj'
+trusted = 's3://256240406578-datalake-dev-trusted/dados_publicos_cnpj'
+refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
+
 # Creating Spark Session
 print("Creating SparkSession...")
 spark = SparkSession.builder.master('local[*]')\
@@ -13,7 +18,7 @@ spark.sparkContext.setLogLevel("WARN")
 
 # Reading CSV file
 print("Reading Motivos CSV file from S3...")
-motivos = spark.read.csv("s3://dadosgov-raw-256240406578/dados_publicos_cnpj/Motivos*",
+motivos = spark.read.csv(f"{raw}/Motivos*",
                         inferSchema=True, sep=";", encoding='latin1')
 
 # Renaming columns
@@ -23,9 +28,9 @@ for index, colName in enumerate(motivosColNames):
 
 # Writing as parquet table in trusted and refined
 print("Writing cnpj dataset as a parquet table on trusted...")
-motivos.write.format("parquet").mode("overwrite").save("s3://dadosgov-trusted-256240406578/dados_publicos_cnpj/Motivos")
+motivos.write.format("parquet").mode("overwrite").save(f"{trusted}/Motivos")
 print("Writing cnpj dataset as a parquet table on refined...")
-motivos.write.format("parquet").mode("overwrite").save("s3://dadosgov-refined-256240406578/dados_publicos_cnpj/Motivos")
+motivos.write.format("parquet").mode("overwrite").save(f"{refined}/Motivos")
 
 # Stopping Spark Session
 spark.stop()

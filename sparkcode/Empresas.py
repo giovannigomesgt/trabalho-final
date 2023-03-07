@@ -3,6 +3,12 @@ print("Importing libraries...")
 from pyspark.sql.types import DoubleType, StringType
 from pyspark.sql import SparkSession, functions as f
 
+# Variables
+raw = 's3://256240406578-datalake-dev-raw/dados_publicos_cnpj'
+trusted = 's3://256240406578-datalake-dev-trusted/dados_publicos_cnpj'
+refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
+
+
 # Creating SparkSession
 print("Creating SparkSession...")
 spark = SparkSession.builder.master("local[*]")\
@@ -14,7 +20,7 @@ spark.sparkContext.setLogLevel("WARN")
 
 # Reading Empresas CSV from S3
 print("Reading Empresas CSV file from S3...")
-empresas = spark.read.csv("s3://dadosgov-raw-256240406578/dados_publicos_cnpj/Empresas*",
+empresas = spark.read.csv(f"{raw}/Empresas*",
                         inferSchema=True, sep=";", encoding='latin1')
 
 # Renaming Columns
@@ -30,7 +36,7 @@ for index, colName in enumerate(empresasColNames):
 
 # Writing cnpj dataset as a parquet table on Trusted
 print("Writing cnpj dataset as a parquet table on Trusted...")
-empresas.write.format("parquet").mode("overwrite").save("s3://dadosgov-trusted-256240406578/dados_publicos_cnpj/Empresas")
+empresas.write.format("parquet").mode("overwrite").save(f"{trusted}/Empresas")
 
 # Formatting capital_social_da_empresa Column
 empresas = empresas.withColumn("capital_social_da_empresa", f.regexp_replace("capital_social_da_empresa", ',', '.'))
@@ -60,6 +66,6 @@ print("Writing cnpj dataset as a parquet table on Refined...")
     .write
     .format('parquet')
     .mode("overwrite")
-    .save("s3://dadosgov-refined-256240406578/dados_publicos_cnpj/Empresas")
+    .save(f"{refined}/Empresas")
 )
 spark.stop()
