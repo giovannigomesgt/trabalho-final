@@ -51,23 +51,23 @@ def processamento_dados():
                         'Name': 'Worker nodes',
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
-                        'InstanceType': 'm5.2xlarge',
+                        'InstanceType': 'mm5.xlarge',
                         'InstanceCount': 2,
                     }
                 ],
                 'KeepJobFlowAliveWhenNoSteps': True,
                 'TerminationProtected': False,
-                'Ec2SubnetId': 'subnet-00709a3ade46a24c7'
+                #'Ec2SubnetId': 'subnet-00709a3ade46a24c7'
             },
             ServiceRole='EMR_DefaultRole',
             JobFlowRole='EMR_EC2_DefaultRole',
             VisibleToAllUsers=True,
-            Tags=[
-                {"Key": "BusinessDepartment", "Value": "Pottencial"}, {
-                    "Key": "CostCenter", "Value": "N/A"}, {"Key": "environment", "Value": "dev"},
-                {"Key": "ProjectName", "Value": "Data Lake"}, {
-                    "Key": "TechnicalTeam", "Value": "Arquitetura"}
-            ],
+            # Tags=[
+            #     {"Key": "BusinessDepartment", "Value": "Pottencial"}, {
+            #         "Key": "CostCenter", "Value": "N/A"}, {"Key": "environment", "Value": "dev"},
+            #     {"Key": "ProjectName", "Value": "Data Lake"}, {
+            #         "Key": "TechnicalTeam", "Value": "Arquitetura"}
+            # ],
             StepConcurrencyLevel = 3,
             AutoTerminationPolicy={
                 "IdleTimeout": 20
