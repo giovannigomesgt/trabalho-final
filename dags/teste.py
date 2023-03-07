@@ -37,7 +37,7 @@ def testeEmr():
             Name='Processamento_Dados_Gov',
             LogUri='s3://emr-256240406578/Logs_emr/',
             ReleaseLabel='emr-6.8.0',
-            Applications=[{'Name': 'Spark'}],            
+            Applications=[{'Name': 'Spark'}],
             Instances={
                 'InstanceGroups': [
                     {
@@ -65,6 +65,12 @@ def testeEmr():
             AutoTerminationPolicy={
                 'IdleTimeout': 300
             },
+            Tags=[
+                {"Key": "BusinessDepartment", "Value": "Pottencial"}, {
+                    "Key": "CostCenter", "Value": "N/A"}, {"Key": "environment", "Value": "Prd"},
+                {"Key": "ProjectName", "Value": "Data Lake"}, {
+                    "Key": "TechnicalTeam", "Value": "Arquitetura"}
+            ],
         )
         return cluster_id["JobFlowId"]
 
