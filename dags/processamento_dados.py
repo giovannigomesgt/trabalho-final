@@ -26,14 +26,14 @@ default_args = {
     tags=['Spark','EMR','Processamento','Gov']
     )
     
-def govDados():
+def processamento_dados():
 
     inicio = DummyOperator(task_id='inicio')
 
     @task
     def criando_cluster_emr():
         cluster_id = client.run_job_flow(
-            Name='Processamento_Gov',
+            Name='Automated_EMR_Gio',
             ServiceRole='EMR_DefaultRole',
             JobFlowRole='EMR_EC2_DefaultRole',
             VisibleToAllUsers=True,
@@ -236,4 +236,4 @@ def govDados():
     terminacluster = terminando_cluster_emr(cluster)
     wait_step >> processoSucess >> terminacluster >> fim
 
-execucao = govDados()
+execucao = processamento_dados()
