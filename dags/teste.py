@@ -200,20 +200,26 @@ def testeEmr():
 
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
-        idsteps = []
+        step_ids = []
         stepId = stepId
-        cluster_id = cid
+
+        steps_response = client.list_steps(ClusterId=cid)
+        for step in steps_response['Steps']:  # Captura todos os Ids dos steps
+            step_ids.append(step['Id'])
+             # print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
+
         waiter = client.get_waiter('step_complete')
-        waiter.wait(
-            ClusterId=cluster_id,
-            WaiterConfig={
-                'Delay': 10,
-                'MaxAttempts': 600
-            }
+        for step_id in step_ids:
+            waiter.wait(
+                ClusterId=cid,
+                StepId=step_id,
+                WaiterConfig={
+                    'Delay': 10,
+                    'MaxAttempts': 600
+                }
             )
 
-
-        # steps_response = client.list_steps(ClusterId=cluster_id)
+        
 
         # for step in steps_response['Steps']:  # Captura todos os Ids dos steps
         #     idsteps.append(step['Id'])
@@ -222,8 +228,7 @@ def testeEmr():
         #     ClusterId='string',
         #     StepId='string'
         # )
-        #response['Step']['Status']['State] --> 'PENDING'|'CANCEL_PENDING'|'RUNNING'|'COMPLETED'|'CANCELLED'|'FAILED'|'INTERRUPTED',
-
+        # response['Step']['Status']['State] --> 'PENDING'|'CANCEL_PENDING'|'RUNNING'|'COMPLETED'|'CANCELLED'|'FAILED'|'INTERRUPTED',
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
 
