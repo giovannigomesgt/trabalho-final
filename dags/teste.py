@@ -205,7 +205,9 @@ def testeEmr():
         while True:
             response = client.list_steps(ClusterId=cluster_id)
             steps = response['Steps']
-            if all(step['Status']['State'] == 'COMPLETED' for step in steps):
+            print(steps['Status']['State'])
+            statusStep = ['COMPLETED', 'CANCELLED', 'FAILED']
+            if all(step['Status']['State'] in statusStep  for step in steps):
                 break
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
