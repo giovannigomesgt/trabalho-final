@@ -207,7 +207,7 @@ def testeEmr():
         while True:
             response = client.list_steps(ClusterId=cluster_id)
             steps = response['Steps']
-            print(steps['Status']['State'])
+            print(steps)
             if all(step['Status']['State'] == 'COMPLETED'  for step in steps):
                 break
 
