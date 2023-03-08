@@ -200,9 +200,16 @@ def testeEmr():
 
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
-        stepId = stepId    
+        stepId = stepId
+        cluster_id = cid
+
         while True:
-            cluster_desc = client.describe_cluster(ClusterId=cid)
+            cluster_desc = client.describe_cluster(ClusterId=cluster_id)
+            
+            if 'StepStates' not in cluster_desc:
+                print("Nenhum passo em execução.")
+                break
+            
             step_states = [step['Status']['State'] for step in cluster_desc['StepStates']]
             
             if all(state in ['COMPLETED', 'CANCELLED', 'FAILED', 'INTERRUPTED'] for state in step_states):
