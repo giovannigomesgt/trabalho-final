@@ -63,7 +63,7 @@ def testeEmr():
             JobFlowRole='EMR_EC2_DefaultRole',
             VisibleToAllUsers=True,
             AutoTerminationPolicy={
-                'IdleTimeout': 300
+                'IdleTimeout': 60
             },
             Tags=[
                 {"Key": "BusinessDepartment", "Value": "Pottencial"}, {
