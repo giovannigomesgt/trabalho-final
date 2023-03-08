@@ -205,19 +205,9 @@ def testeEmr():
 
         while True:
             cluster_desc = client.describe_cluster(ClusterId=cluster_id)
+            print(cluster_desc)
             
-            if 'StepStates' not in cluster_desc:
-                print("Nenhum passo em execução.")
-                break
-            
-            step_states = [step['Status']['State'] for step in cluster_desc['StepStates']]
-            
-            if all(state in ['COMPLETED', 'CANCELLED', 'FAILED', 'INTERRUPTED'] for state in step_states):
-                print("Todos os steps foram concluídos.")
-                break
-            
-            print("Aguardando conclusão dos steps. Verificando novamente em 30 segundos...")
-            time.sleep(30)
+            return cluster_desc
         
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
