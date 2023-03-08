@@ -203,11 +203,9 @@ def testeEmr():
         stepId = stepId
         cluster_id = cid
 
-        while True:
-            cluster_desc = client.describe_cluster(ClusterId=cluster_id)
-            print(cluster_desc)
-            
-            return cluster_desc
+        response = client.list_steps(ClusterId=cluster_id)
+        print(response)
+        return response
         
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
