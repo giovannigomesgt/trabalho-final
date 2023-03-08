@@ -200,15 +200,24 @@ def testeEmr():
 
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
+        idsteps = []
         stepId = stepId
         cluster_id = cid
-        steps_response = client.list_steps(ClusterId=cluster_id)
-        
-        for step in steps_response['Steps']:
-            print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
-            
-        return steps_response['Steps']
-        
+        waiter = client.get_waiter('step_complete')
+        waiter.wait(ClusterId=cluster_id)
+
+
+        # steps_response = client.list_steps(ClusterId=cluster_id)
+
+        # for step in steps_response['Steps']:  # Captura todos os Ids dos steps
+        #     idsteps.append(step['Id'])
+        #     # print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
+        # response = client.describe_step(
+        #     ClusterId='string',
+        #     StepId='string'
+        # )
+        #response['Step']['Status']['State] --> 'PENDING'|'CANCEL_PENDING'|'RUNNING'|'COMPLETED'|'CANCELLED'|'FAILED'|'INTERRUPTED',
+
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
 
