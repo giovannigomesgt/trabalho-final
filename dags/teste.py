@@ -208,22 +208,6 @@ def testeEmr():
             step_ids.append(step['Id'])
              # print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
 
-        waiter = client.get_waiter('step_complete_or_cancelled_or_timedout')
-        for step_id in step_ids:
-            waiter.wait(
-                ClusterId=cid,
-                StepId=step_id,
-                WaiterConfig={
-                    'Delay': 10,
-                    'MaxAttempts': 600
-                }
-            )
-
-        
-
-        # for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-        #     idsteps.append(step['Id'])
-        #     # print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
         # response = client.describe_step(
         #     ClusterId='string',
         #     StepId='string'
