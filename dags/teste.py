@@ -3,7 +3,7 @@ from airflow.operators.dummy import DummyOperator
 from airflow.models import Variable
 from datetime import datetime
 import boto3
-from botocore.exceptions import WaiterError
+import time
 
 aws_access_key_id = Variable.get('aws_access_key_id')
 aws_secret_access_key = Variable.get('aws_secret_access_key')
@@ -200,16 +200,18 @@ def testeEmr():
 
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
-        ultimoStep = stepId
-        cluster_id = cid
-
-        # Aguarde até que todos os jobs no cluster estejam completos
+        stepId = stepId    
         while True:
-            response = client.list_steps(ClusterId=cluster_id)
-            steps = response['Steps']
-            print(steps)
-            if all(step['Status']['State'] == 'COMPLETED'  for step in steps):
+            cluster_desc = client.describe_cluster(ClusterId=cid)
+            step_states = [step['Status']['State'] for step in cluster_desc['StepStates']]
+            
+            if all(state in ['COMPLETED', 'CANCELLED', 'FAILED', 'INTERRUPTED'] for state in step_states):
+                print("Todos os steps foram concluídos.")
                 break
+            
+            print("Aguardando conclusão dos steps. Verificando novamente em 30 segundos...")
+            time.sleep(30)
+        
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
 
