@@ -194,7 +194,7 @@ def testeEmr():
                 }
             ]
         )
-        #return newstep['StepIds'][-1]
+        return newstep['StepIds'][-1]
 
     @task
     def aguardando_execucao_do_job(cid: str):
