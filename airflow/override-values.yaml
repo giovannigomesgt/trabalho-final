@@ -1,5 +1,5 @@
-defaultAirflowTag: "2.3.0"
-airflowVersion: "2.3.0"
+defaultAirflowTag: "2.5.0"
+airflowVersion: "2.5.0"
 executor: "CeleryKubernetesExecutor"
 # env:
 #   - name: AIRFLOW__LOGGING__REMOTE_LOGGING
@@ -20,8 +20,8 @@ webserver:
   service:
     type: LoadBalancer
 
-redis:
-  enabled: false
+# redis:
+#   enabled: false
 
 dags:
   gitSync:

@@ -3,6 +3,7 @@ from airflow.operators.dummy import DummyOperator
 from airflow.models import Variable
 from datetime import datetime
 import boto3
+from botocore.exceptions import WaiterError
 
 aws_access_key_id = Variable.get('aws_access_key_id')
 aws_secret_access_key = Variable.get('aws_secret_access_key')
@@ -200,15 +201,31 @@ def testeEmr():
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
         ultimoStep = stepId
-        cluster_id = cid
-        # Aguarde até que todos os jobs no cluster estejam completos
-        while True:
-            response = client.list_steps(ClusterId=cluster_id)
-            steps = response['Steps']
-            print(steps['Status']['State'])
-            statusStep = ['COMPLETED', 'CANCELLED', 'FAILED']
-            if all(step['Status']['State'] in statusStep  for step in steps):
-                break
+        response = client.describe_cluster(ClusterId=cid)
+        num_steps = response['Cluster']['NormalizedInstanceHours']
+
+        for step_id in range(1, num_steps+1):
+            waiter = client.get_waiter('step_complete')
+            try:
+                waiter.wait(
+                    ClusterId=cid,
+                    StepId=str(step_id),
+                    WaiterConfig={
+                        'Delay': 10,
+                        'MaxAttempts': 600
+                    }
+                )
+            except WaiterError as e:
+                print(f"Step {step_id} falhou ou foi cancelado: {str(e)}")
+
+        # # Aguarde até que todos os jobs no cluster estejam completos
+        # while True:
+        #     response = client.list_steps(ClusterId=cluster_id)
+        #     steps = response['Steps']
+        #     print(steps['Status']['State'])
+        #     statusStep = ['COMPLETED', 'CANCELLED', 'FAILED']
+        #     if all(step['Status']['State'] in statusStep  for step in steps):
+        #         break
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
 
