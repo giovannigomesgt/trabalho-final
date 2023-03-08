@@ -204,7 +204,13 @@ def testeEmr():
         stepId = stepId
         cluster_id = cid
         waiter = client.get_waiter('step_complete')
-        waiter.wait(ClusterId=cluster_id)
+        waiter.wait(
+            ClusterId=cluster_id,
+            WaiterConfig={
+                'Delay': 10,
+                'MaxAttempts': 600
+            }
+            )
 
 
         # steps_response = client.list_steps(ClusterId=cluster_id)
