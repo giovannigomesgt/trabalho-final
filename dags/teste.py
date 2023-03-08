@@ -197,8 +197,8 @@ def testeEmr():
         return newstep['StepIds'][-1]
 
     @task
-    def aguardando_execucao_do_job(cid: str):
-        
+    def aguardando_execucao_do_job(cid: str, stepId: str):
+        stepId = stepId
         waiter = client.get_waiter('step_complete') # mudar para waiter = emr_client.get_waiter('cluster_running')
 
         waiter.wait(
@@ -231,7 +231,7 @@ def testeEmr():
 
     esperacluster >> indicadores
 
-    wait_step = aguardando_execucao_do_job(cluster)
+    wait_step = aguardando_execucao_do_job(cluster, indicadores)
 
     terminacluster = terminando_cluster_emr(cluster)
     wait_step >> processoSucess >> terminacluster >> fim
