@@ -19,6 +19,7 @@ default_args = {
     'start_date': datetime(2022, 11, 10)  # YYYY, MM, DD
 }
 
+
 @dag(
     default_args=default_args,
     schedule_interval="@once",
@@ -198,17 +199,14 @@ def testeEmr():
 
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
-        stepId = stepId
-        waiter = client.get_waiter('step_complete') # mudar para waiter = emr_client.get_waiter('cluster_running')
-
-        waiter.wait(
-            ClusterId=cid,
-            #StepId=stepId, # remover no próximo commit
-            WaiterConfig={
-                'Delay': 10,
-                'MaxAttempts': 600
-            }
-        )
+        ultimoStep = stepId
+        cluster_id = cid
+        # Aguarde até que todos os jobs no cluster estejam completos
+        while True:
+            response = client.list_steps(ClusterId=cluster_id)
+            steps = response['Steps']
+            if all(step['Status']['State'] == 'COMPLETED' for step in steps):
+                break
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
 
