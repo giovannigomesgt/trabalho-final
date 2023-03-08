@@ -35,7 +35,7 @@ def testeEmr():
     def criando_cluster_emr():
         cluster_id = client.run_job_flow(
             Name='Processamento_Dados_Gov',
-            LogUri='s3://emr-256240406578/Logs_emr/',
+            LogUri='s3://256240406578-datalake/emr-logs//',
             ReleaseLabel='emr-6.8.0',
             Applications=[{'Name': 'Spark'}],
             Instances={

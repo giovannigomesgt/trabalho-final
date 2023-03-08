@@ -1,6 +1,6 @@
 defaultAirflowTag: "2.3.0"
 airflowVersion: "2.3.0"
-executor: "KubernetesExecutor"
+executor: "CeleryKubernetesExecutor"
 # env:
 #   - name: AIRFLOW__LOGGING__REMOTE_LOGGING
 #     value: 'True'
