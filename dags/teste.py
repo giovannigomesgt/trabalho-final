@@ -202,10 +202,12 @@ def testeEmr():
     def aguardando_execucao_do_job(cid: str, stepId: str):
         stepId = stepId
         cluster_id = cid
-
-        response = client.list_steps(ClusterId=cluster_id)
-        print(response)
-        return response
+        steps_response = client.list_steps(ClusterId=cluster_id)
+        
+        for step in steps_response['Steps']:
+            print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
+            
+        return steps_response['Steps']
         
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
