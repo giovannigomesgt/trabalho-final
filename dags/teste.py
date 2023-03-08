@@ -208,7 +208,7 @@ def testeEmr():
             step_ids.append(step['Id'])
              # print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
 
-        waiter = client.get_waiter('step_complete')
+        waiter = client.get_waiter('step_complete_or_cancelled')
         for step_id in step_ids:
             waiter.wait(
                 ClusterId=cid,
