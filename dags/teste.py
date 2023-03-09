@@ -208,19 +208,17 @@ def testeEmr():
         for step in steps_response['Steps']:  # Captura todos os Ids dos steps
             step_ids.append(step['Id'])
 
-        while True:
-            if len(step_ids) > 0:
-                for step in step_ids:
-                    response = client.describe_step(
-                        ClusterId=cid,
-                        StepId=step
-                    )
-                    if response['Step']['Status']['State'] in state:
-                        print(response['Step']['Name'])
-                        print(response['Step']['Status']['State'])
-                        step_ids.remove(step)
-            else:
-                break
+        while len(step_ids) > 0:
+            for step in step_ids:
+                response = client.describe_step(
+                    ClusterId=cid,
+                    StepId=step
+                )
+                if response['Step']['Status']['State'] in state:
+                    print(response['Step']['Name'])
+                    print(response['Step']['Status']['State'])
+                    step_ids.remove(step)
+            
 
 
              # print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
