@@ -202,19 +202,26 @@ def testeEmr():
     def aguardando_execucao_do_job(cid: str, stepId: str):
         step_ids = []
         stepId = stepId
+        state = ['COMPLETED', 'CANCELLED', 'FAILED','INTERRUPTED']
 
         steps_response = client.list_steps(ClusterId=cid)
         for step in steps_response['Steps']:  # Captura todos os Ids dos steps
             step_ids.append(step['Id'])
 
         while True:
-            for step in step_ids:
-                response = client.describe_step(
-                    ClusterId=cid,
-                    StepId=step
-                )
-                print(response['Step']['Name'])
-                print(response['Step']['Status']['State'])
+            if len(step_ids) > 0:
+                for step in step_ids:
+                    response = client.describe_step(
+                        ClusterId=cid,
+                        StepId=step
+                    )
+                    if response['Step']['Status']['State'] in state:
+                        print(response['Step']['Name'])
+                        print(response['Step']['Status']['State'])
+                        step_ids.remove(step)
+            else:
+                break
+
 
              # print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
 
