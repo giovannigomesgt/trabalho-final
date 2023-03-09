@@ -3,7 +3,7 @@ from airflow.operators.dummy import DummyOperator
 from airflow.models import Variable
 from datetime import datetime
 import boto3
-import time
+from time import sleep
 
 aws_access_key_id = Variable.get('aws_access_key_id')
 aws_secret_access_key = Variable.get('aws_secret_access_key')
@@ -64,7 +64,7 @@ def testeEmr():
             JobFlowRole='EMR_EC2_DefaultRole',
             VisibleToAllUsers=True,
             AutoTerminationPolicy={
-                'IdleTimeout': 60
+                'IdleTimeout': 180
             },
             Tags=[
                 {"Key": "BusinessDepartment", "Value": "Pottencial"}, {
@@ -218,7 +218,8 @@ def testeEmr():
                     print(response['Step']['Name'])
                     print(response['Step']['Status']['State'])
                     step_ids.remove(step)
-            
+                sleep(5)
+
 
 
              # print('Cluster ID: {}\nStep ID: {}\nStatus: {}\n'.format(cluster_id, step['Id'], step['Status']['State']))
