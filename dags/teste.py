@@ -3,7 +3,7 @@ from airflow.operators.dummy import DummyOperator
 from airflow.models import Variable
 from datetime import datetime
 import boto3
-from time import sleep
+import time
 
 aws_access_key_id = Variable.get('aws_access_key_id')
 aws_secret_access_key = Variable.get('aws_secret_access_key')
@@ -200,25 +200,49 @@ def testeEmr():
 
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
-        step_ids = []
         stepId = stepId
-        state = ['COMPLETED', 'CANCELLED', 'FAILED','INTERRUPTED']
+        
+        while True:
+            # obtém informações sobre o cluster
+            response = client.describe_cluster(ClusterId=cid)
+            state = response['Cluster']['Status']['State']
 
-        steps_response = client.list_steps(ClusterId=cid)
-        for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-            step_ids.append(step['Id'])
+            # obtém informações sobre os passos do cluster
+            steps = response['Cluster']['StepStates']
+            step_states = [step['State'] for step in steps]
 
-        while len(step_ids) > 0:
-            for step in step_ids:
-                response = client.describe_step(
-                    ClusterId=cid,
-                    StepId=step
-                )
-                if response['Step']['Status']['State'] in state:
-                    print(response['Step']['Name'])
-                    print(response['Step']['Status']['State'])
-                    step_ids.remove(step)
-                sleep(5)
+            # se todos os passos estiverem concluídos, saia do loop
+            if all(state in ('COMPLETED', 'FAILED', 'CANCELLED') for state in step_states):
+                break
+            # aguarda um tempo antes de verificar novamente o estado do cluster
+            time.sleep(30)
+        
+        
+        
+        
+        
+        
+        # step_ids = []
+        # stepId = stepId
+        # state = ['COMPLETED', 'CANCELLED', 'FAILED','INTERRUPTED']
+
+        # steps_response = client.list_steps(ClusterId=cid)
+        # for step in steps_response['Steps']:  # Captura todos os Ids dos steps
+        #     step_ids.append(step['Id'])
+
+
+
+        # while len(step_ids) > 0:
+        #     for step in step_ids:
+        #         response = client.describe_step(
+        #             ClusterId=cid,
+        #             StepId=step
+        #         )
+        #         if response['Step']['Status']['State'] in state:
+        #             print(response['Step']['Name'])
+        #             print(response['Step']['Status']['State'])
+        #             step_ids.remove(step)
+        #         sleep(5)
 
 
 
