@@ -200,38 +200,24 @@ def testeEmr():
 
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
-        # stepId = stepId
-        # step_ids = []
-
-        # steps_response = client.list_steps(ClusterId=cid)
-        # for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-        #     step_ids.append(step['Id'])
-        
-        # while True:
-        #     # obtém informações sobre o cluster
-        #     response = client.describe_cluster(ClusterId=cid)
-        #     state = response['Cluster']['Status']['State']
-
-        #     print(state)
-
-        #     # aguarda um tempo antes de verificar novamente o estado do cluster
-        #     time.sleep(30)
-        state = ['COMPLETED', 'CANCELLED', 'FAILED', 'INTERRUPTED']
-        steps_to_check = []
+        stepId = stepId
+        step_ids = []
 
         steps_response = client.list_steps(ClusterId=cid)
-        for step in steps_response['Steps']:
-            steps_to_check.append(step['Id'])
+        
+        for step in steps_response['Steps']:  # Captura todos os Ids dos steps
+            step_ids.append(step['Id'])
+        
+        while True:
+            # obtém informações sobre o cluster
+            response = client.describe_cluster(ClusterId=cid)
+            state = response['Cluster']['Status']['State']
 
-        while steps_to_check:
-            for step_id in steps_to_check:
-                response = client.describe_step(ClusterId=cid, StepId=step_id)
-                step_state = response['Step']['Status']['State']
-                if step_state in state:
-                    print(response['Step']['Name'])
-                    print(step_state)
-                    steps_to_check.remove(step_id)
-                time.sleep(5)
+            print(state)
+
+            # aguarda um tempo antes de verificar novamente o estado do cluster
+            time.sleep(30)
+        
 
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
