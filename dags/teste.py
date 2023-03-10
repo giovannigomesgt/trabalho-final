@@ -100,6 +100,18 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--deploy-mode', 'cluster',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false'
                                      's3://notebooks-256240406578/sparkcode/etlgov/Cnaes.py'
                                      ]
                     }
@@ -205,7 +217,8 @@ def testeEmr():
         while True:
             # Obtém informações sobre o cluster
             response = client.describe_cluster(ClusterId=cid)
-            state = response['Cluster']['Status']['State'] # RUNNING or WAITING
+            # RUNNING or WAITING
+            state = response['Cluster']['Status']['State']
             print('-' * 150)
             print(f'Situação do Cluster EMR {state}')
 
@@ -214,63 +227,22 @@ def testeEmr():
                 steps_response = client.list_steps(ClusterId=cid)
                 step_ids = [step['Id'] for step in steps_response['Steps']]
                 # Remove IDs dos steps que foram concluídos ou cancelados
-                step_ids = [step_id for step_id in step_ids 
+                step_ids = [step_id for step_id in step_ids
                             if client.describe_step(ClusterId=cid, StepId=step_id)['Step']['Status']['State'] not in ['COMPLETED', 'CANCELLED', 'FAILED', 'INTERRUPTED']]
-                
+
                 if not step_ids:  # Se não houver etapas pendentes, saia do loop
                     break
 
             elif state == 'RUNNING':
                 # Captura todos os IDs dos steps
                 steps_response = client.list_steps(ClusterId=cid)
-                for step in steps_response['Steps']: 
-                    print(f"Nome do Step: {step['Name']} - Status: {step['Status']['State']}")
+                for step in steps_response['Steps']:
+                    print(
+                        f"Nome do Step: {step['Name']} - Status: {step['Status']['State']}")
                 print('-' * 150)
 
             # Aguarda um tempo antes de verificar novamente o estado do cluster
             time.sleep(10)
-
-
-
-        
-        # ###
-        # stepIds = []
-        # steps_response = client.list_steps(ClusterId=cid)
-        # for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-        #     stepIds.append(step['Id'])
-
-        # while len(stepIds) > 0:
-        #     # obtém informações sobre o cluster
-        #     response = client.describe_cluster(ClusterId=cid)
-        #     state = response['Cluster']['Status']['State'] # Running -- WAITING
-        #     print('-'*150)
-        #     print(f'Situação do Cluster EMR {state}')
-            
-        #     if state == 'WAITING':
-        #         steps_response = client.list_steps(ClusterId=cid)
-        #         for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-        #             if step['Status']['State'] in ['COMPLETED','CANCELLED','FAILED','INTERRUPTED']:
-        #                 try:
-        #                     stepIds.remove(step['Id'])
-        #                 except:
-        #                     pass
-                        
-
-        #             # if 'PENDING' not in step['Status']['State']:
-        #             #     break
-                    
-        #     elif state == 'RUNNING':
-        #         print('-'*150)
-        #         steps_response = client.list_steps(ClusterId=cid)
-        #         for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-        #             print(f"Nome do Step: {step['Name']} - Status: {step['Status']['State']}")
-        #         print('-'*150)
-                
-        #     # aguarda um tempo antes de verificar novamente o estado do cluster
-        #     time.sleep(10)
-        #     ###
-        
-
 
     processoSucess = DummyOperator(task_id="processamento_concluido")
 
