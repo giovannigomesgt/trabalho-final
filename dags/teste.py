@@ -208,7 +208,9 @@ def testeEmr():
             # obtém informações sobre o cluster
             response = client.describe_cluster(ClusterId=cid)
             state = response['Cluster']['Status']['State'] # Running -- WAITING
-            print(state)
+            print('-'*150)
+            print(f'Situação do Cluster EMR {state}')
+            
             
             if state == 'WAITING':
                 steps_response = client.list_steps(ClusterId=cid)
@@ -218,14 +220,16 @@ def testeEmr():
                     
             
             else:
+                print('-'*150)
                 steps_response = client.list_steps(ClusterId=cid)
                 for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-                    print(f"Nome do Step: {step['Name']}")
-                    print(f"Condição: {step['Status']['State']}")
+                    print(f"Nome do Step: {step['Name']} - Status {step['Status']['State']}")
+                print('-'*150)
+                
+                   
 
 
-            print(f'Situação do Cluster EMR {state}')
-
+            
             # aguarda um tempo antes de verificar novamente o estado do cluster
             time.sleep(30)
         
