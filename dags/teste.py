@@ -201,14 +201,17 @@ def testeEmr():
     @task
     def aguardando_execucao_do_job(cid: str, stepId: str):
         stepId = stepId
-        response = client.describe_cluster(ClusterId=cid)
+        
         
         
         while True:
             # obtém informações sobre o cluster
-            steps_response = client.list_steps(ClusterId=cid)
+            response = client.describe_cluster(ClusterId=cid)
             state = response['Cluster']['Status']['State'] # Running -- WAITING
+            print(state)
+            
             if state == 'WAITING':
+                steps_response = client.list_steps(ClusterId=cid)
                 for step in steps_response['Steps']:  # Captura todos os Ids dos steps
                     if 'PENDING' not in step['Status']['State']:
                         break
