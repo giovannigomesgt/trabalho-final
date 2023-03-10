@@ -1,13 +1,7 @@
 defaultAirflowTag: "2.5.0"
 airflowVersion: "2.5.0"
 executor: "CeleryKubernetesExecutor"
-# env:
-#   - name: AIRFLOW__LOGGING__REMOTE_LOGGING
-#     value: 'True'
-#   - name: AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER
-#     value: 's3://airflow-256240406578/logs/'
-#   - name: AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID
-#     value: 'my_aws'
+
 webserver:
   defaultUser:
     enabled: true
