@@ -212,15 +212,16 @@ def testeEmr():
             if state == 'WAITING':
                 steps_response = client.list_steps(ClusterId=cid)
                 for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-                    if 'PENDING' not in step['Status']['State']:
-                        break
+                    print(f"Nome do Step: {step['Name']} - Status: {step['Status']['State']}")
+                    # if 'PENDING' not in step['Status']['State']:
+                    #     break
                     
             
             elif state == 'RUNNING':
                 print('-'*150)
                 steps_response = client.list_steps(ClusterId=cid)
                 for step in steps_response['Steps']:  # Captura todos os Ids dos steps
-                    print(f"Nome do Step: {step['Name']} - Status: {step['Status']['State']} - ActionOnFailure: {step['ActionOnFailure']}")
+                    print(f"Nome do Step: {step['Name']} - Status: {step['Status']['State']}")
                 print('-'*150)
                 
                    
