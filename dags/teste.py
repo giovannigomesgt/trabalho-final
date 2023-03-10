@@ -199,8 +199,8 @@ def testeEmr():
         return newstep['StepIds'][-1]
 
     @task
-    def aguardando_execucao_do_job(cid: str, stepId: str):
-        stepId = stepId
+    def aguardando_execucao_do_job(cid: str, remover: str):
+        remover = remover
         step_ids = []
         while True:
             # Obtém informações sobre o cluster
@@ -219,7 +219,7 @@ def testeEmr():
                 
                 if not step_ids:  # Se não houver etapas pendentes, saia do loop
                     break
-                
+
             elif state == 'RUNNING':
                 # Captura todos os IDs dos steps
                 steps_response = client.list_steps(ClusterId=cid)
