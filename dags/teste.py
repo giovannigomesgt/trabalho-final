@@ -52,8 +52,8 @@ def testeEmr():
                         'Name': 'Worker nodes',
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
-                        'InstanceType': 'c5.4xlarge',
-                        'InstanceCount': 2,
+                        'InstanceType': 'm5.xlarge',
+                        'InstanceCount': 3,
                     }
                 ],
                 'KeepJobFlowAliveWhenNoSteps': True,
