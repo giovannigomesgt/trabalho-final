@@ -35,14 +35,14 @@ if kubectl cluster-info &> /dev/null; then
     # Verifica se o cluster airflow-cluster existe
     if kind get clusters | grep -q airflow-cluster; then
     # O cluster airflow-cluster existe, exclua-o
-    kind delete cluster --name airflow-cluster
+    kind delete cluster --name my-cluster
     echo "----------------------------------------------------------------------------------------------------"
     echo "O cluster airflow-cluster foi excluído com sucesso"
     echo "----------------------------------------------------------------------------------------------------"
     else
     # O cluster airflow-cluster não existe, exiba uma mensagem de aviso
     echo "----------------------------------------------------------------------------------------------------"
-    echo "O cluster airflow-cluster não existe"
+    echo "O cluster my-cluster não existe"
     echo "----------------------------------------------------------------------------------------------------"
     fi
     # Removendo imagens do Docker

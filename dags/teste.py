@@ -100,7 +100,6 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
-                                     '--deploy-mode', 'cluster',
                                      '--conf', 'spark.executor.cores=8',
                                      '--conf', 'spark.executor.memory=4g',
                                      '--conf', 'spark.executor.memoryOverhead=1g',
@@ -111,7 +110,7 @@ def testeEmr():
                                      '--conf', 'spark.default.parallelism=16',
                                      '--conf', 'spark.driver.maxResultSize=5g',
                                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false'
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Cnaes.py'
                                      ]
                     }
