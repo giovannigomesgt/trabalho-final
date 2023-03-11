@@ -72,7 +72,7 @@ def testeEmr():
                 {"Key": "ProjectName", "Value": "Data Lake"}, {
                     "Key": "TechnicalTeam", "Value": "Arquitetura"}
             ],
-            StepConcurrencyLevel=3
+            StepConcurrencyLevel=4
         )
         return cluster_id["JobFlowId"]
 
@@ -121,6 +121,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Empresas.py'
                                      ]
                     }
@@ -131,6 +142,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Estabelecimentos.py'
                                      ]
                     }
@@ -141,6 +163,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Motivos.py'
                                      ]
                     }
@@ -151,6 +184,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Municipios.py'
                                      ]
                     }
@@ -161,6 +205,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Naturezas.py'
                                      ]
                     }
@@ -171,6 +226,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Paises.py'
                                      ]
                     }
@@ -181,6 +247,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Qualificacoes.py'
                                      ]
                     }
@@ -191,6 +268,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Simples.py'
                                      ]
                     }
@@ -201,6 +289,17 @@ def testeEmr():
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--conf', 'spark.executor.cores=8',
+                                     '--conf', 'spark.executor.memory=4g',
+                                     '--conf', 'spark.executor.memoryOverhead=1g',
+                                     '--conf', 'spark.executor.instances=1',
+                                     '--conf', 'spark.driver.cores=8',
+                                     '--conf', 'spark.driver.memory=4g',
+                                     '--conf', 'spark.driver.memoryOverhead=1g',
+                                     '--conf', 'spark.default.parallelism=16',
+                                     '--conf', 'spark.driver.maxResultSize=5g',
+                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                                     '--conf', 'spark.dynamicAllocation.enabled=false',
                                      's3://notebooks-256240406578/sparkcode/etlgov/Socios.py'
                                      ]
                     }
