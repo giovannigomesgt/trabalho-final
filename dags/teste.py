@@ -52,7 +52,7 @@ def testeEmr():
                         'Name': 'Worker nodes',
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
-                        'InstanceType': 'm5.xlarge',
+                        'InstanceType': 'm5.2xlarge',
                         'InstanceCount': 3,
                     }
                 ],
