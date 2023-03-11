@@ -10,7 +10,7 @@ refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
 
 # Criar sessão Spark
 print("Criando sessão Spark...")
-spark = SparkSession.builder.master("local[*]").appName("Tratando Dados Gov").config("spark.sql.legacy.timeParserPolicy", "LEGACY").config("spark.sql.parquet.datetimeRebaseModeInWrite", "LEGACY").getOrCreate()
+spark = SparkSession.builder.appName("Tratando Dados Gov").config("spark.sql.legacy.timeParserPolicy", "LEGACY").config("spark.sql.parquet.datetimeRebaseModeInWrite", "LEGACY").getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
 
 # ETL Naturezas

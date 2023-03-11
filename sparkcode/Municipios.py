@@ -12,7 +12,8 @@ refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
 
 # Creating a Spark session
 print("Creating SparkSession...")
-spark = SparkSession.builder.master("local[*]").appName("Tratando dados Gov")\
+spark = SparkSession.builder\
+    .appName("Tratando dados Gov")\
     .config("spark.sql.legacy.timeParserPolicy", "LEGACY")\
     .config("spark.sql.parquet.datetimeRebaseModeInWrite", "LEGACY")\
     .getOrCreate()

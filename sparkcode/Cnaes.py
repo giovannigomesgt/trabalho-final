@@ -8,14 +8,24 @@ trusted = 's3://256240406578-datalake-dev-trusted/dados_publicos_cnpj'
 refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
 
 
-# Creating SparkSession
+## Creating SparkSession
+#print("Creating SparkSession...")
+#spark = SparkSession.builder.master('local[*]') \
+#    .appName("Processing Gov Data") \
+#    .config("spark.sql.legacy.timeParserPolicy", "LEGACY") \
+#    .config("spark.sql.parquet.datetimeRebaseModeInWrite", "LEGACY") \
+#    .getOrCreate()
+#spark.sparkContext.setLogLevel("WARN")
+
+
 print("Creating SparkSession...")
-spark = SparkSession.builder.master('local[*]') \
+spark = SparkSession.builder \
     .appName("Processing Gov Data") \
     .config("spark.sql.legacy.timeParserPolicy", "LEGACY") \
     .config("spark.sql.parquet.datetimeRebaseModeInWrite", "LEGACY") \
     .getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
+
 
 # ETL CNAEs
 print("Reading CNAEs CSV file from S3...")

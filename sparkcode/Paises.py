@@ -6,7 +6,7 @@ trusted = 's3://256240406578-datalake-dev-trusted/dados_publicos_cnpj'
 refined = 's3://256240406578-datalake-dev-refined/dados_publicos_cnpj'
 
 
-spark = SparkSession.builder.master('local[*]').appName("Tratando dados Gov").getOrCreate()
+spark = SparkSession.builder.appName("Tratando dados Gov").getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
 
 print("Reading Paises CSV file from S3...")

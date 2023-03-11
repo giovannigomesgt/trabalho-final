@@ -52,7 +52,7 @@ def testeEmr():
                         'Name': 'Worker nodes',
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
-                        'InstanceType': 'm5.2xlarge',
+                        'InstanceType': 'c5.4xlarge',
                         'InstanceCount': 2,
                     }
                 ],
@@ -72,7 +72,7 @@ def testeEmr():
                 {"Key": "ProjectName", "Value": "Data Lake"}, {
                     "Key": "TechnicalTeam", "Value": "Arquitetura"}
             ],
-            StepConcurrencyLevel=3
+            StepConcurrencyLevel=5
         )
         return cluster_id["JobFlowId"]
 
