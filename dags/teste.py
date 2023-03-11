@@ -48,12 +48,19 @@ def testeEmr():
                         'InstanceType': 'm5.xlarge',
                         'InstanceCount': 1,
                     },
-                    {
+                     {
                         'Name': 'Worker nodes',
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
+                        'InstanceType': 'm5.xlarge',
+                        'InstanceCount': 1,
+                    },
+                    {
+                        'Name': 'Task nodes',
+                        'Market': 'ON_DEMAND',
+                        'InstanceRole': 'TASK',
                         'InstanceType': 'm5.2xlarge',
-                        'InstanceCount': 3,
+                        'InstanceCount': 2,
                     }
                 ],
                 'KeepJobFlowAliveWhenNoSteps': True,
@@ -72,7 +79,7 @@ def testeEmr():
                 {"Key": "ProjectName", "Value": "Data Lake"}, {
                     "Key": "TechnicalTeam", "Value": "Arquitetura"}
             ],
-            StepConcurrencyLevel=5
+            StepConcurrencyLevel=3
         )
         return cluster_id["JobFlowId"]
 
