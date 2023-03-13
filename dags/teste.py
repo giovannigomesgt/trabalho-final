@@ -53,7 +53,7 @@ def testeEmr():
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
                         'InstanceType': 'm5.2xlarge',
-                        'InstanceCount': 2,
+                        'InstanceCount': 3,
                     }
                 ],
                 'KeepJobFlowAliveWhenNoSteps': True,
