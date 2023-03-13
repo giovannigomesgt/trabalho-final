@@ -52,3 +52,7 @@ helm upgrade --install airflow apache-airflow/airflow \
   --debug \
   --timeout 20m0s
 fi
+echo "----------------------------------------------------------------------------------------------------"
+echo "Iniciando o serviço WebServer Airflow"
+echo "----------------------------------------------------------------------------------------------------"
+kubectl port-forward svc/airflow-webserver 8080:8080 -n airflow

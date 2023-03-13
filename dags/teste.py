@@ -38,7 +38,7 @@ def testeEmr():
             Name='Processamento_Dados_Gov',
             LogUri='s3://256240406578-datalake/emr-logs/',
             ReleaseLabel='emr-6.8.0',
-            Applications=[{"Name": "Spark"},{"Name": "Hadoop"}],
+            Applications=[{"Name": "Spark"}, {"Name": "Hadoop"}],
             Instances={
                 'InstanceGroups': [
                     {
@@ -103,17 +103,17 @@ def testeEmr():
                             'Args': ['spark-submit',
                                      '--deploy-mode', 'cluster',
                                      '--master', 'yarn',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
+                                     "--conf", "spark.executor.cores=4",
+                                     "--conf", "spark.executor.memory=2g",
+                                     "--conf", "spark.executor.memoryOverhead=1g",
+                                     "--conf", "spark.executor.instances=2",
+                                     "--conf", "spark.driver.cores=4",
+                                     "--conf", "spark.driver.memory=2g",
+                                     "--conf", "spark.driver.memoryOverhead=1g",
+                                     "--conf", "spark.default.parallelism=8",
+                                     "--conf", "spark.driver.maxResultSize=2g",
+                                     "--conf", "spark.sql.execution.arrow.pyspark.enabled=true",
+                                     "--conf", "spark.dynamicAllocation.enabled=false",
                                      's3://notebooks-256240406578/sparkcode/etlgov/Cnaes.py'
                                      ]
                     }
@@ -316,7 +316,7 @@ def testeEmr():
                 #                      ]
                 #     }
                 # }
-                # Fim
+                # # Fim
             ]
         )
         return newstep['StepIds'][-1]
