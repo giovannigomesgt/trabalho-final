@@ -1,14 +1,14 @@
 #!/bin/bash
 # Cria o cluster do Kubernetes com Kind
-# Verifica se o cluster airflow-cluster existe
-if kind get clusters | grep -q airflow-cluster; then
+# Verifica se o cluster kind-cluster existe
+if kind get clusters | grep -q kind-cluster; then
 echo "----------------------------------------------------------------------------------------------------"
-echo "O cluster airflow-cluster já existe"
+echo "O cluster kind-cluster já existe"
 echo "----------------------------------------------------------------------------------------------------"
 else
-# O cluster airflow-cluster não existe, exiba uma mensagem de aviso
+# O cluster kind-cluster não existe, exiba uma mensagem de aviso
 echo "----------------------------------------------------------------------------------------------------"
-echo "Criando um cluster com o nome airflow-cluster"
+echo "Criando um cluster com o nome kind-cluster"
 echo "----------------------------------------------------------------------------------------------------"
 kind create cluster --config infra/cluster.yaml
 fi
