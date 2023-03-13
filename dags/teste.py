@@ -38,7 +38,7 @@ def testeEmr():
             Name='Processamento_Dados_Gov',
             LogUri='s3://256240406578-datalake/emr-logs/',
             ReleaseLabel='emr-6.8.0',
-            Applications=[{'Name': 'Spark'}],
+            Applications=[{"Name": "Spark"},{"Name": "Hadoop"}],
             Instances={
                 'InstanceGroups': [
                     {
@@ -48,17 +48,10 @@ def testeEmr():
                         'InstanceType': 'm5.xlarge',
                         'InstanceCount': 1,
                     },
-                     {
+                    {
                         'Name': 'Worker nodes',
                         'Market': 'ON_DEMAND',
                         'InstanceRole': 'CORE',
-                        'InstanceType': 'm5.xlarge',
-                        'InstanceCount': 1,
-                    },
-                    {
-                        'Name': 'Task nodes',
-                        'Market': 'ON_DEMAND',
-                        'InstanceRole': 'TASK',
                         'InstanceType': 'm5.2xlarge',
                         'InstanceCount': 2,
                     }
@@ -101,12 +94,15 @@ def testeEmr():
         newstep = client.add_job_flow_steps(
             JobFlowId=cid,
             Steps=[
+                # Cnaes
                 {
                     'Name': 'Processa dados do Gov - Cnaes',
                     'ActionOnFailure': "CONTINUE",
                     'HadoopJarStep': {
                             'Jar': 'command-runner.jar',
                             'Args': ['spark-submit',
+                                     '--deploy-mode', 'cluster',
+                                     '--master', 'yarn',
                                      '--conf', 'spark.executor.cores=8',
                                      '--conf', 'spark.executor.memory=4g',
                                      '--conf', 'spark.executor.memoryOverhead=1g',
@@ -121,196 +117,206 @@ def testeEmr():
                                      's3://notebooks-256240406578/sparkcode/etlgov/Cnaes.py'
                                      ]
                     }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Empresas',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Empresas.py'
-                                     ]
-                    }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Estabelecimentos',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Estabelecimentos.py'
-                                     ]
-                    }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Motivos',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Motivos.py'
-                                     ]
-                    }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Municipios',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Municipios.py'
-                                     ]
-                    }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Naturezas',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Naturezas.py'
-                                     ]
-                    }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Paises',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Paises.py'
-                                     ]
-                    }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Qualificacoes',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Qualificacoes.py'
-                                     ]
-                    }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Simples',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Simples.py'
-                                     ]
-                    }
-                },
-                {
-                    'Name': 'Processa dados do Gov - Socios',
-                    'ActionOnFailure': "CONTINUE",
-                    'HadoopJarStep': {
-                            'Jar': 'command-runner.jar',
-                            'Args': ['spark-submit',
-                                     '--conf', 'spark.executor.cores=8',
-                                     '--conf', 'spark.executor.memory=4g',
-                                     '--conf', 'spark.executor.memoryOverhead=1g',
-                                     '--conf', 'spark.executor.instances=1',
-                                     '--conf', 'spark.driver.cores=8',
-                                     '--conf', 'spark.driver.memory=4g',
-                                     '--conf', 'spark.driver.memoryOverhead=1g',
-                                     '--conf', 'spark.default.parallelism=16',
-                                     '--conf', 'spark.driver.maxResultSize=5g',
-                                     '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
-                                     '--conf', 'spark.dynamicAllocation.enabled=false',
-                                     's3://notebooks-256240406578/sparkcode/etlgov/Socios.py'
-                                     ]
-                    }
-                }
+                }  # ,
+                # # Empresas
+                # {
+                #     'Name': 'Processa dados do Gov - Empresas',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Empresas.py'
+                #                      ]
+                #     }
+                # },
+                # # Estabelecimentos
+                # {
+                #     'Name': 'Processa dados do Gov - Estabelecimentos',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Estabelecimentos.py'
+                #                      ]
+                #     }
+                # },
+                # # Motivos
+                # {
+                #     'Name': 'Processa dados do Gov - Motivos',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Motivos.py'
+                #                      ]
+                #     }
+                # },
+                # # Municipios
+                # {
+                #     'Name': 'Processa dados do Gov - Municipios',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Municipios.py'
+                #                      ]
+                #     }
+                # },
+                # # Naturezas
+                # {
+                #     'Name': 'Processa dados do Gov - Naturezas',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Naturezas.py'
+                #                      ]
+                #     }
+                # },
+                # # Paises
+                # {
+                #     'Name': 'Processa dados do Gov - Paises',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Paises.py'
+                #                      ]
+                #     }
+                # },
+                # # Qualificacoes
+                # {
+                #     'Name': 'Processa dados do Gov - Qualificacoes',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Qualificacoes.py'
+                #                      ]
+                #     }
+                # },
+                # # Simples
+                # {
+                #     'Name': 'Processa dados do Gov - Simples',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Simples.py'
+                #                      ]
+                #     }
+                # },
+                # # Socios
+                # {
+                #     'Name': 'Processa dados do Gov - Socios',
+                #     'ActionOnFailure': "CONTINUE",
+                #     'HadoopJarStep': {
+                #             'Jar': 'command-runner.jar',
+                #             'Args': ['spark-submit',
+                #                      '--conf', 'spark.executor.cores=8',
+                #                      '--conf', 'spark.executor.memory=4g',
+                #                      '--conf', 'spark.executor.memoryOverhead=1g',
+                #                      '--conf', 'spark.executor.instances=1',
+                #                      '--conf', 'spark.driver.cores=8',
+                #                      '--conf', 'spark.driver.memory=4g',
+                #                      '--conf', 'spark.driver.memoryOverhead=1g',
+                #                      '--conf', 'spark.default.parallelism=16',
+                #                      '--conf', 'spark.driver.maxResultSize=5g',
+                #                      '--conf', 'spark.sql.execution.arrow.pyspark.enabled=true',
+                #                      '--conf', 'spark.dynamicAllocation.enabled=false',
+                #                      's3://notebooks-256240406578/sparkcode/etlgov/Socios.py'
+                #                      ]
+                #     }
+                # }
+                # Fim
             ]
         )
         return newstep['StepIds'][-1]
